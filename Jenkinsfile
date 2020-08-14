@@ -11,7 +11,7 @@ pipeline {
      stage('Building image') {
       steps{
         script {
-        dockerImage = sudo docker.build(" nginx -f Dockerfile ")
+        dockerImage =  docker.build(" nginx -f Dockerfile ")
         }
       }
     }
