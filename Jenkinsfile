@@ -1,20 +1,61 @@
-node {
-        def app
+ pipeline {
+  environment {
+    registry = "admin/10.191.196.156:8123"
+    registryCredential = "dockerhub"
+  }
+  agent {
 
-        stage('Clone repository') {
-          checkout([$class: 'GitSCM', branches: [[name: '*/master']],
-          doGenerateSubmoduleConfigurations: false, extensions: [],
-          submoduleCfg: [], userRemoteConfigs]
-          url: 'https://github.com/onlyillusion/homework.git')
+         label 'docker' }
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git 'http://gitlabtest.test.kv.aval/jenkins/docker.git/'
+      }
+    }
+    stage('Building image') {
+      steps{
+        script {
+        dockerImage = sh 'docker build -t base_image:v$BUILD_NUMBER -f Dockerfile .'
         }
+      }
+    }
+  }
+}     
+pipeline {
+  environment {
+    registry = "10.191.196.156:8123"
+    registryCredential = "admin"
+    dockerImage = ''
+  }
+  agent {
 
-        stage('Build image') {
-          app = docker.build("docker-image")
+         label 'docker' }
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git 'http://gitlabtest.test.kv.aval/jenkins/docker.git/'
+      }
+    }
+     stage('Building image') {
+      steps{
+        script {
+        dockerImage = docker.build("base-image:$BUILD_NUMBER")
         }
-
-
-
-        stage('Clean existing image') {
-          sh "docker rmi docker-image"
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( 'http://$registry', registryCredential ) {
+            dockerImage.push()
+          }
         }
+      }
+    }
+    stage('Remove Unused docker image') {
+      steps{
+        sh 'docker rmi base-image:$BUILD_NUMBER'
+      }
+    }
+  }
 }
