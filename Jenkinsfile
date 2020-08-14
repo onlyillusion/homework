@@ -4,8 +4,8 @@ node {
         stage('Clone repository') {
           checkout([$class: 'GitSCM', branches: [[name: '*/master']],
           doGenerateSubmoduleConfigurations: false, extensions: [],
-          submoduleCfg: [], userRemoteConfigs:
-          url: 'https://github.com/onlyillusion/homework.git'])
+          submoduleCfg: [], userRemoteConfigs]
+          url: 'https://github.com/onlyillusion/homework.git')
         }
 
         stage('Build image') {
