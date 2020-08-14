@@ -17,7 +17,7 @@ pipeline {
     }
     stage('Run docker images') {
       steps{
-        sh 'sudo docker run -e APP_ENV=Slavik -d -p 80:80 nginx'
+        sh ' docker run -e APP_ENV=Slavik -d -p 80:80 nginx'
       }
     }
   }
