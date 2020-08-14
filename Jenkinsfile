@@ -15,9 +15,9 @@ pipeline {
         }
       }
     }
-    stage('Remove Unused docker image') {
+    stage('Run docker images') {
       steps{
-        sh 'docker rmi nginx'
+        sh 'docker run -e APP_ENV=Slavik -d -p 80:80 nginx'
       }
     }
   }
