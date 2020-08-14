@@ -1,5 +1,5 @@
 pipelineJob('testpipeline-build') {
-	description('Build test docker image, test and push it to local registry')
+	description('Build test docker image and run him')
 	definition {
     	cpsScm {
       	scm {
