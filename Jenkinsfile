@@ -1,6 +1,6 @@
 pipeline {
 
- node {
+  master {
 
   stages {
     stage('Cloning Git') {
