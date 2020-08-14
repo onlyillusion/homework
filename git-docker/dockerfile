@@ -13,6 +13,7 @@ WORKDIR /apitests
 # Create volume
 VOLUME /apitests
 
+#Create entrypoint
 ENTRYPOINT ["git", "clone"]
 
 # Clone from git
